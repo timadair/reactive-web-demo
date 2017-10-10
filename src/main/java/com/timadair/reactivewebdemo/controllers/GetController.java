@@ -22,4 +22,11 @@ public class GetController {
       .map(i -> "count: " + i)
       .collectList().block(); // This blocks until the take calls onCompleted on its subscribers.
   }
+
+  @GetMapping(value = "/flux")
+  public Flux<String> getFlux() {
+    return Flux.interval(Duration.ofMillis(50))
+      .take(100) // Take unsubscribes after the 100th event.
+      .map(i -> "count: " + i);
+  }
 }
