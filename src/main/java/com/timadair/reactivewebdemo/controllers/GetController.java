@@ -29,4 +29,15 @@ public class GetController {
       .take(100) // Take unsubscribes after the 100th event.
       .map(i -> "count: " + i);
   }
+
+  @GetMapping(value = "/flux/endless", produces = "text/event-stream")
+  public Flux<String> getEndlessFlux() {
+    return Flux.interval(Duration.ofMillis(50))
+      .map(this::mapAndPrint);
+  }
+
+  private String mapAndPrint(Long i) {
+    System.out.println(i);
+    return "count: " + i;
+  }
 }
