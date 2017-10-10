@@ -23,7 +23,7 @@ public class GetController {
       .collectList().block(); // This blocks until the take calls onCompleted on its subscribers.
   }
 
-  @GetMapping(value = "/flux")
+  @GetMapping(value = "/flux", produces = "text/event-stream")
   public Flux<String> getFlux() {
     return Flux.interval(Duration.ofMillis(50))
       .take(100) // Take unsubscribes after the 100th event.
