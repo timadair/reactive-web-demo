@@ -28,6 +28,14 @@ public class PersonController {
     return personRepository.findBySurname(Mono.just(surname));
   }
 
+  @PostMapping(value = "/persons/",
+    produces = MediaType.APPLICATION_STREAM_JSON_VALUE,
+    consumes = MediaType.APPLICATION_STREAM_JSON_VALUE)
+  Flux<Person> createPersons(@RequestBody Flux<Person> personFlux) {
+    return personRepository.saveAll(personFlux.map(p1 -> println(p1, "in")))
+      .map(p -> println(p, "out"));
+  }
+
   private Person println(Person d, String mode) {
     System.out.println(mode + ": " + d.getFullName());
     return d;
